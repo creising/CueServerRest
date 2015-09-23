@@ -1,0 +1,18 @@
+apply plugin: 'maven'
+
+group = "org.urbanbyte.cueserverresr"
+version = "1.0.1"
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+    }
+}
