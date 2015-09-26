@@ -4,18 +4,13 @@ apply plugin: 'jetty'
 apply plugin: 'distribution'
 
 group = "org.urbanbyte.cueserverrest"
-version = "1.0.0"
 
-task stage {
-    dependsOn installDist
+task deploy(type: Exec) {
+    description = "Deploys the war file to Heroku"
+    commandLine 'heroku', 'deploy:war', '--war', './build/libs/CueServerRest.war', '--app', "cueserver-rest"
 }
 
-task copyToLib(type: Copy) {
-    into "$buildDir/lib"
-    from(configurations.compile)
-}
-
-stage.dependsOn(copyToLib)
+deploy.dependsOn(war)
 
 repositories {
     mavenCentral()
@@ -33,8 +28,7 @@ buildscript {
 
 dependencies {
 
-    compile 'org.jboss.resteasy:resteasy-jaxrs:3.0.13.Final',
-            'org.mortbay.jetty:jetty-runner:8.1.14.v20131031'
+    compile 'org.jboss.resteasy:resteasy-jaxrs:3.0.13.Final'
     runtime 'org.slf4j:slf4j-simple:1.7.7'
 
 }
