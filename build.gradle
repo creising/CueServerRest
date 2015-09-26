@@ -1,9 +1,21 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'jetty'
+apply plugin: 'distribution'
 
 group = "org.urbanbyte.cueserverrest"
 version = "1.0.0"
+
+task stage {
+    dependsOn installDist
+}
+
+task copyToLib(type: Copy) {
+    into "$buildDir/lib"
+    from(configurations.compile)
+}
+
+stage.dependsOn(copyToLib)
 
 repositories {
     mavenCentral()
@@ -20,7 +32,9 @@ buildscript {
 }
 
 dependencies {
-    //compile 'javax.ws.rs:jsr311-api:1.1.1'
-    compile 'org.jboss.resteasy:resteasy-jaxrs:3.0.13.Final'
+
+    compile 'org.jboss.resteasy:resteasy-jaxrs:3.0.13.Final',
+            'org.mortbay.jetty:jetty-runner:8.1.14.v20131031'
     runtime 'org.slf4j:slf4j-simple:1.7.7'
+
 }
