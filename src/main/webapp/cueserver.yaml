@@ -3,9 +3,9 @@ info:
   title: CueServer REST API
   description: For accessing common CueServer functions with REST
   version: 1.0.0
-host:
+host: cueserver-rest.herokuapp.com
 schemes:
-  - http
+  - https
 basePath: /v1
 produces:
   - application/json
@@ -15,15 +15,12 @@ paths:
       summary: System Info
       description: |
         The System endpoint get the current system information from the CueServer
-      parameters:
       tags:
         - System
       responses:
         '200':
           description: System information
           schema:
-            type: object
-            items:
               $ref: '#/definitions/System'
         default:
           description: Unexpected error
@@ -35,16 +32,16 @@ definitions:
     properties:
       deviceName:
         type: string
-        description: 'The name of the CueServer.'
+        description: The name of the CueServer.
       model:
         type: string
-        description: 'The model of the CueServer.'
+        description: The model of the CueServer.
       serialNumber:
         type: string
-        description: 'The serial number.'
+        description: The serial number.
       time:
         type: string
-        description: 'The current time off of the CueServer.'
+        description: The current time off of the CueServer.
       hasPassword:
         type: boolean
         description: 'True if the CueServer has a password, false if not.'
