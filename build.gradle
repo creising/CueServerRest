@@ -36,6 +36,7 @@ dependencies {
     compile group: 'com.sun.jersey.contribs', name: 'jersey-multipart', version:'1.18.1'
     compile group: 'com.sun.jersey', name: 'jersey-server', version:'1.18.1'
     compile group: 'javax.servlet', name: 'servlet-api', version:'2.5'
+    compile 'org.urbanbyte.cueserver:cueserver-client:1.0.1'
 
     runtime 'org.slf4j:slf4j-simple:1.7.7'
 }
