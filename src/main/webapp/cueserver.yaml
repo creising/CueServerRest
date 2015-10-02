@@ -14,7 +14,7 @@ paths:
     get:
       summary: System Info
       description: |
-        The System endpoint get the current system information from the CueServer
+        The System endpoint gets the current system information from the CueServer
       tags:
         - System
       responses:
@@ -22,6 +22,22 @@ paths:
           description: System information
           schema:
               $ref: '#/definitions/System'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /playback:
+    get:
+      summary: Plackback Info
+      description: |
+        Get a summary of the CueServer's playbacks
+      tags:
+        - Playback
+      responses:
+        '200':
+          description: Playback information
+          schema:
+              $ref: '#/definitions/Playback'
         default:
           description: Unexpected error
           schema:
@@ -44,7 +60,28 @@ definitions:
         description: The current time off of the CueServer.
       hasPassword:
         type: boolean
-        description: 'True if the CueServer has a password, false if not.'
+        description: True if the CueServer has a password, false if not.
+  Playback:
+    type: object
+    properties:
+      playback:
+        type: string
+        description: The ID of the playback.
+      currentCue:
+        $ref: '#/definitions/Cue'
+        description: The current cue.
+      nextCue:
+        $ref: '#/definitions/Cue'
+        description: The next cue inlined to be played.
+  Cue:
+    type: object
+    properties:
+      number:
+        type: number
+        description: The cue number.
+      name:
+        type: string
+        description: The name of the cue.
   Error:
     type: object
     properties:
