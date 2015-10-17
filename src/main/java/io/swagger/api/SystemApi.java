@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiParam;
 import com.sun.jersey.multipart.FormDataParam;
 
 import io.swagger.model.Error;
+import io.swagger.model.System;
 
 import java.util.List;
 import io.swagger.api.NotFoundException;
@@ -25,7 +26,7 @@ import javax.ws.rs.*;
 
 @Produces({ "application/json" })
 @io.swagger.annotations.Api(value = "/system", description = "the system API")
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2015-09-26T21:02:19.775Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2015-10-17T19:55:06.226Z")
 public class SystemApi  {
 
    private final SystemApiService delegate = SystemApiServiceFactory.getSystemApi();
@@ -34,11 +35,11 @@ public class SystemApi  {
     
     
     
-    @io.swagger.annotations.ApiOperation(value = "System Info", notes = "The System endpoint get the current system information from the CueServer", response = Object.class)
+    @io.swagger.annotations.ApiOperation(value = "System Info", notes = "The System endpoint gets the current system information from the CueServer", response = System.class)
     @io.swagger.annotations.ApiResponses(value = { 
-        @io.swagger.annotations.ApiResponse(code = 200, message = "System information", response = Object.class),
+        @io.swagger.annotations.ApiResponse(code = 200, message = "System information", response = System.class),
         
-        @io.swagger.annotations.ApiResponse(code = 200, message = "Unexpected error", response = Object.class) })
+        @io.swagger.annotations.ApiResponse(code = 200, message = "Unexpected error", response = System.class) })
 
     public Response systemGet()
     throws NotFoundException {

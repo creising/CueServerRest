@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   title: CueServer REST API
   description: For accessing common CueServer functions with REST
-  version: 1.0.0
+  version: 1.1.0
 host: cueserver-rest.herokuapp.com
 schemes:
   - https
@@ -28,20 +28,47 @@ paths:
             $ref: '#/definitions/Error'
   /playback:
     get:
-      summary: Plackback Info
-      description: |
-        Get a summary of the CueServer's playbacks
       tags:
         - Playback
+      summary: Plackback Info
+      description: |
+        Get the summary of a CueServer's playbacks
+      tags:
+        - Playback
+      parameters:
+        - name: playback
+          in: query
+          description: The number of thr playback to get
+          type: integer
+          required: false
+          default: 1
+          minimum: 1
+          maximum: 4
       responses:
         '200':
           description: Playback information
           schema:
               $ref: '#/definitions/Playback'
-        default:
-          description: Unexpected error
+        '400':
+          description: Playback data was not valid
+    post:
+      tags:
+        - Playback
+      description: |
+        Plays a cue in the given playback
+      operationId: playCue
+      parameters:
+        - name: cue
+          in: body
+          description: Cue and playback to be played
+          required: true
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/PlaybackCue'
+      responses:
+        '202':
+          description: Cue played
+        '400':
+          description: Cue and/or playback data was not valid
 definitions:
   System:
     type: object
@@ -82,6 +109,15 @@ definitions:
       name:
         type: string
         description: The name of the cue.
+  PlaybackCue:
+    type: object
+    properties:
+      cueNumber:
+        type: number
+        description: The number of the cue to play.
+      playbackNumber:
+        type: integer
+        description: The playback to the cue will be played on.
   Error:
     type: object
     properties:
