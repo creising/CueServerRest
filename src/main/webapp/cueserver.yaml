@@ -26,22 +26,22 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /playback:
+  /playback/{number}:
     get:
       tags:
         - Playback
       summary: Plackback Info
       description: |
-        Get the summary of a CueServer's playbacks
+        Get the summary of a CueServer's playback.
       tags:
         - Playback
       parameters:
-        - name: playback
-          in: query
-          description: The number of thr playback to get
+        - name: number
+          in: path
+          description: The number of the playback to get the status of.
+          required: true
           type: integer
-          required: false
-          default: 1
+          format: int32
           minimum: 1
           maximum: 4
       responses:
@@ -51,24 +51,69 @@ paths:
               $ref: '#/definitions/Playback'
         '400':
           description: Playback data was not valid
-    post:
+  '/playback/{number}/cue/{cueNumber}':
+    put:
       tags:
         - Playback
       description: |
         Plays a cue in the given playback
       operationId: playCue
       parameters:
-        - name: cue
-          in: body
-          description: Cue and playback to be played
+        - name: number
+          in: path
+          description: The number of the playback to get the status of.
           required: true
-          schema:
-            $ref: '#/definitions/PlaybackCue'
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 4
+        - name: cueNumber
+          in: path
+          description: The number of the cue to play on the playback
+          required: true
+          type: integer
+          format: int32
+          minimum: 1
       responses:
         '202':
           description: Cue played
         '400':
           description: Cue and/or playback data was not valid
+  /cue:
+    put:
+      tags:
+        - Cue
+      description: |
+        Records the current levels to the given cue
+      parameters:
+        - name: cue
+          in: body
+          description: Cue to be recorded
+          required: true
+          schema:
+            $ref: '#/definitions/RecordedCue'
+      responses:
+        '201':
+          description: Cue recorded
+        '400':
+          description: Cue data was not valid
+  '/cue/{cueNumber}':
+    delete:
+      tags:
+        - Cue
+      description: Deletes the given cue
+      operationId: deleteCue
+      parameters:
+        - name: cueNumber
+          in: path
+          description: deletes the given cue
+          required: true
+          type: number
+          format: double
+      responses:
+        200:
+          description: OK
+
 definitions:
   System:
     type: object
@@ -109,15 +154,18 @@ definitions:
       name:
         type: string
         description: The name of the cue.
-  PlaybackCue:
+  RecordedCue:
     type: object
     properties:
-      cueNumber:
+      number:
         type: number
-        description: The number of the cue to play.
-      playbackNumber:
-        type: integer
-        description: The playback to the cue will be played on.
+        description: the cue's numbers
+      uptime:
+        type: number
+        description: the cue's uptime
+      downtime:
+        type: number
+        description: the cue's downtime
   Error:
     type: object
     properties:
