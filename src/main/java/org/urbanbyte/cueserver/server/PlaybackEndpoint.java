@@ -4,11 +4,9 @@ import io.swagger.api.NotFoundException;
 import io.swagger.api.PlaybackApiService;
 import io.swagger.model.Cue;
 import io.swagger.model.Playback;
-import io.swagger.model.PlaybackCue;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.urbanbyte.cueserver.CueServerClient;
 import org.urbanbyte.cueserver.data.playback.DetailedPlaybackStatus;
-import org.urbanbyte.cueserver.data.playback.PlaybackInfo;
 import org.urbanbyte.cueserver.http.HttpCueServerClient;
 
 import javax.ws.rs.core.MediaType;
@@ -26,13 +24,29 @@ public class PlaybackEndpoint extends PlaybackApiService
 
     public PlaybackEndpoint()
     {
-        client = new HttpCueServerClient("http://cueserver.dnsalias.com");
+        client = CommonCueServer.getCueServerInstance();
     }
 
     @Override
-    public Response playbackGet(Integer playbackNumber) throws NotFoundException
+    public Response clearPlayback(Integer playbackNumber) throws NotFoundException
     {
-        if(playbackNumber < 1 || playbackNumber > 4)
+        if(!isValidPlayback(playbackNumber))
+        {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        org.urbanbyte.cueserver.data.playback.Playback playback =
+                convertPlayback(playbackNumber);
+
+        client.clearPlayback(playback);
+        return Response.status(Response.Status.ACCEPTED).build();
+    }
+
+    @Override
+    public Response getPlayback(Integer playbackNumber) throws NotFoundException
+    {
+        System.out.println("getting playback");
+        if(!isValidPlayback(playbackNumber))
         {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -58,10 +72,9 @@ public class PlaybackEndpoint extends PlaybackApiService
     }
 
     @Override
-    public Response playCue(PlaybackCue cue) throws NotFoundException
+    public Response playCue(Integer playbackNumber, Double cueNumber) throws NotFoundException
     {
-        int playbackNumber = cue.getPlaybackNumber();
-        if(playbackNumber < 1 || playbackNumber > 4 )
+        if(!isValidPlayback(playbackNumber))
         {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -69,11 +82,28 @@ public class PlaybackEndpoint extends PlaybackApiService
         org.urbanbyte.cueserver.data.playback.Playback playback =
                 convertPlayback(playbackNumber);
 
-        client.playCue(cue.getCueNumber().doubleValue(), playback);
+        client.playCue(cueNumber, playback);
         return Response.status(Response.Status.ACCEPTED).build();
     }
 
-    private org.urbanbyte.cueserver.data.playback.Playback convertPlayback(int playbackNumber)
+    private boolean isValidPlayback(Integer playback)
+    {
+        if(playback == null)
+        {
+            return false;
+        }
+        else if(playback < 1 || playback > 4 )
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private org.urbanbyte.cueserver.data.playback.Playback convertPlayback(
+            int playbackNumber)
     {
         org.urbanbyte.cueserver.data.playback.Playback playback;
 
@@ -98,7 +128,7 @@ public class PlaybackEndpoint extends PlaybackApiService
     private Cue convertCueServerCue(org.urbanbyte.cueserver.data.cue.Cue cue)
     {
         Cue converted = new Cue();
-        if(cue != null)
+        if (cue != null)
         {
             converted.setName(cue.getName());
             converted.setNumber(BigDecimal.valueOf(cue.getNumber()));

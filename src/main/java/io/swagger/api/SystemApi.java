@@ -26,7 +26,7 @@ import javax.ws.rs.*;
 
 @Produces({ "application/json" })
 @io.swagger.annotations.Api(value = "/system", description = "the system API")
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2015-10-17T19:55:06.226Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2015-10-20T02:57:28.659Z")
 public class SystemApi  {
 
    private final SystemApiService delegate = SystemApiServiceFactory.getSystemApi();

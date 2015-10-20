@@ -5,7 +5,7 @@ import io.swagger.model.*;
 
 import com.sun.jersey.multipart.FormDataParam;
 
-import io.swagger.model.Playback;
+import io.swagger.model.RecordedCue;
 
 import java.util.List;
 import io.swagger.api.NotFoundException;
@@ -18,15 +18,12 @@ import com.sun.jersey.multipart.FormDataParam;
 import javax.ws.rs.core.Response;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2015-10-20T02:57:28.659Z")
-public abstract class PlaybackApiService {
+public abstract class CueApiService {
   
-      public abstract Response clearPlayback(Integer number)
+      public abstract Response cuePut(RecordedCue cue)
       throws NotFoundException;
   
-      public abstract Response getPlayback(Integer number)
-      throws NotFoundException;
-  
-      public abstract Response playCue(Integer number,Double cueNumber)
+      public abstract Response deleteCue(Double cueNumber)
       throws NotFoundException;
   
 }

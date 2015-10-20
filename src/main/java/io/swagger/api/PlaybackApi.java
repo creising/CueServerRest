@@ -8,9 +8,7 @@ import io.swagger.annotations.ApiParam;
 
 import com.sun.jersey.multipart.FormDataParam;
 
-import io.swagger.model.Playbacks;
-import io.swagger.model.Error;
-import io.swagger.model.PlaybackCue;
+import io.swagger.model.Playback;
 
 import java.util.List;
 import io.swagger.api.NotFoundException;
@@ -27,27 +25,41 @@ import javax.ws.rs.*;
 
 @Produces({ "application/json" })
 @io.swagger.annotations.Api(value = "/playback", description = "the playback API")
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2015-10-17T19:55:06.226Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2015-10-20T02:57:28.659Z")
 public class PlaybackApi  {
 
    private final PlaybackApiService delegate = PlaybackApiServiceFactory.getPlaybackApi();
 
-    @GET
+    @PUT
+    @Path("/clear/{number}")
     
     
-    
-    @io.swagger.annotations.ApiOperation(value = "Plackback Info", notes = "Get the summary of a CueServer's playbacks", response = Playbacks.class)
+    @io.swagger.annotations.ApiOperation(value = "", notes = "Plays a cue in the given playback", response = Void.class)
     @io.swagger.annotations.ApiResponses(value = { 
-        @io.swagger.annotations.ApiResponse(code = 200, message = "Playback information", response = Playbacks.class),
+        @io.swagger.annotations.ApiResponse(code = 202, message = "Playback cleared", response = Void.class),
         
-        @io.swagger.annotations.ApiResponse(code = 200, message = "Unexpected error", response = Playbacks.class) })
+        @io.swagger.annotations.ApiResponse(code = 400, message = "Playback data was not valid", response = Void.class) })
 
-    public Response playbackGet(@ApiParam(value = "The number of thr playback to get", defaultValue="1") @QueryParam("playback") Integer playback)
+    public Response clearPlayback(@ApiParam(value = "The number of the playback to get the status of.",required=true ) @PathParam("number") Integer number)
     throws NotFoundException {
-        return delegate.playbackGet(playback);
+        return delegate.clearPlayback(number);
     }
-    @POST
+    @GET
+    @Path("/{number}")
     
+    
+    @io.swagger.annotations.ApiOperation(value = "Plackback Info", notes = "Get the summary of a CueServer's playback.", response = Playback.class)
+    @io.swagger.annotations.ApiResponses(value = { 
+        @io.swagger.annotations.ApiResponse(code = 200, message = "Playback information", response = Playback.class),
+        
+        @io.swagger.annotations.ApiResponse(code = 400, message = "Playback data was not valid", response = Playback.class) })
+
+    public Response getPlayback(@ApiParam(value = "The number of the playback to get the status of.",required=true ) @PathParam("number") Integer number)
+    throws NotFoundException {
+        return delegate.getPlayback(number);
+    }
+    @PUT
+    @Path("/{number}/cue/{cueNumber}")
     
     
     @io.swagger.annotations.ApiOperation(value = "", notes = "Plays a cue in the given playback", response = Void.class)
@@ -56,9 +68,10 @@ public class PlaybackApi  {
         
         @io.swagger.annotations.ApiResponse(code = 400, message = "Cue and/or playback data was not valid", response = Void.class) })
 
-    public Response playCue(@ApiParam(value = "Cue and playback to be played" ,required=true ) PlaybackCue cue)
+    public Response playCue(@ApiParam(value = "The number of the playback to get the status of.",required=true ) @PathParam("number") Integer number,
+    @ApiParam(value = "The number of the cue to play on the playback",required=true ) @PathParam("cueNumber") Double cueNumber)
     throws NotFoundException {
-        return delegate.playCue(cue);
+        return delegate.playCue(number,cueNumber);
     }
 }
 
