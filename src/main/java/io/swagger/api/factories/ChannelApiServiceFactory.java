@@ -1,14 +1,14 @@
 package io.swagger.api.factories;
 
-import io.swagger.api.SystemApiService;
+import io.swagger.api.ChannelApiService;
 
 import java.util.ServiceLoader;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2015-10-20T00:53:15.258Z")
-public class SystemApiServiceFactory {
+public class ChannelApiServiceFactory {
 
-   public static SystemApiService getSystemApi()
+   public static ChannelApiService getChannelApi()
    {
-      return ServiceLoader.load(SystemApiService.class).iterator().next();
+      return ServiceLoader.load(ChannelApiService.class).iterator().next();
    }
 }

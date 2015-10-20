@@ -21,7 +21,7 @@ public class SystemEndpoint extends SystemApiService
 
     public SystemEndpoint()
     {
-        client = new HttpCueServerClient("http://cueserver.dnsalias.com");
+        client = CommonCueServer.getCueServerInstance();
     }
 
     @Override
