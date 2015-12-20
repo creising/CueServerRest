@@ -9,7 +9,7 @@ import org.urbanbyte.cueserver.http.HttpCueServerClient;
 public class CommonCueServer
 {
     private static final CueServerClient cueServer =
-            new HttpCueServerClient("http://cueserver.dnsalias.com");
+            new HttpCueServerClient("http://demo1.cueserver.com", 100);
 
     private CommonCueServer()
     {
